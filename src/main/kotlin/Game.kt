@@ -1,18 +1,18 @@
+import kotlin.math.pow
+
 fun main(args: Array<String>) {
     val name = "마드리길";
-    var healthPoints = 29;
+    var healthPoints = 13;
     val isBlessed = true;
     val isImmortal = false;
-    val karma = (Math.pow(Math.random(), (110 - healthPoints) / 100.0) * 20).toInt();
+    val karma = (Math.random().pow((110 - healthPoints) / 100.0) * 20).toInt();
 
+//    println(Math.pow((110 - healthPoints) / 100.0))
     // check aura
+    println(Math.random());
+    println((Math.random().pow(1.01) * 20).toInt())
     val auraVisible = isBlessed && healthPoints > 50 || isImmortal;
-    val auraColor = when(karma) {
-        in 6..10 -> "orange"
-        in 11..15 -> "purple"
-        in 16..20 -> "green"
-        else -> "red"
-    }
+    val auraColor = whatIsUsersAuraColor(auraVisible, karma);
 
     val healthStatus = when (healthPoints) {
         100 -> "최상의 상태임!"
@@ -30,4 +30,22 @@ fun main(args: Array<String>) {
 
 //    if (auraVisible) println("Aura color: $auraColor")
     print(stringFormat)
+}
+
+//private fun whatIsUsersAuraColor(auraVisible: Boolean , karma: Int) = when (karma) {
+//    in 6..10 -> "orange"
+//    in 11..15 -> "Purple"
+//    in 16..20 -> "Green"
+//    else -> "Red"
+//}
+
+private fun whatIsUsersAuraColor(auraVisible: Boolean, karma: Int) = if (auraVisible) {
+    when (karma) {
+        in 6..10 -> "Orange"
+        in 11..15 -> "Purple"
+        in 16..20 -> "Green"
+        else -> "Red"
+    }
+} else {
+    "None"
 }
