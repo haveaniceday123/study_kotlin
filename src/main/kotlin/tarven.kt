@@ -2,7 +2,7 @@ import kotlin.math.roundToInt
 
 const val TAVERN_NAME = "Tavernyl's Folly";
 
-var playerGold = 10;
+var playerGold = 2;
 var playerSilver = 10;
 
 fun main() {
@@ -19,27 +19,37 @@ fun performPurchase(price: Double) {
 
     val totalPurse = playerGold + (playerSilver / 100.0);
 
-    println("Amount in wallet : Gold $totalPurse");
-    println("Buy alchohol with $price Gold");
+    val checkCurrentBalance = totalPurse >= price;
 
-    val remainingBalance = totalPurse - price;
-    println("Player's remainin balance: ${"%.2f".format(remainingBalance)}")
+    if (checkCurrentBalance) {
+        println("Amount in wallet : Gold $totalPurse");
+        println("Buy alchohol with $price Gold");
 
-    val remainingGold = remainingBalance.toInt();
-    val remainingSilver = (remainingBalance % 1 * 100).roundToInt();
+        val remainingBalance = totalPurse - price;
+        println("Player's remainin balance: ${"%.2f".format(remainingBalance)}")
 
-    playerGold = remainingGold;
-    playerSilver = remainingSilver;
+        val remainingGold = remainingBalance.toInt();
+        val remainingSilver = (remainingBalance % 1 * 100).roundToInt();
 
-    displayBalance();
+        playerGold = remainingGold;
+        playerSilver = remainingSilver;
+
+        displayBalance();
+    } else {
+        sayBartenderYouDontHaveEnoughMoney();
+    }
+
+
+
 }
 
 private fun displayBalance() {
     println("Player's wallet balance: (Gold: ${playerGold}개, Silver: ${playerSilver}개)")
 }
 
-
-
+private fun sayBartenderYouDontHaveEnoughMoney() {
+    println("Bartender You Don't have enough moeny. Check your balance");
+}
 
 private fun placeOrder() {
     val indexofApostrophe = TAVERN_NAME.indexOf('\'');
