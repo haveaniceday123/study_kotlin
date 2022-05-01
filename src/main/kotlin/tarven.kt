@@ -1,98 +1,143 @@
 import kotlin.math.roundToInt
+import java.io.File
 
 const val TAVERN_NAME = "Tavernyl's Folly";
 
-var playerGold = 2;
-var playerSilver = 10;
+
+//val patronList: List<String> = listOf("Eli", "Mordoc", "Sophie");
+val patronList: MutableList<String> = mutableListOf("Eli", "Mordoc", "Sophie");
+val uniquePatrons = mutableSetOf<String>();
+val readOnlyPatronList: List<String> = patronList.toList();
+//val patronGold = mapOf("Eli" to 10.5, "Mordoc" to 8.0, "Sophie" to 5.5);
+val patronGold = mutableMapOf<String, Double>()
+val lastName = listOf("Ironfoot", "Fernworth",  "Baggins");
+
+
+val menuList = File("data/tavern-menu-item.txt")
+  .readText()
+  .split("\r\n")
 
 fun main() {
 
-//    placeOrder();
-    placeOrder("elixir,Shirley's Temple,5.91");
-//    println(Integer.toBinaryString(42));
-    println(Integer.toBinaryString(42.inv()))
+
+
+  (0..9).forEach { _ ->
+    val first = patronList.shuffled().first();
+    val last = lastName.shuffled().first();
+    val name = "$first $last";
+    uniquePatrons += name;
+  }
+  
+  uniquePatrons.forEach {
+    patronGold[it] = 6.0;
+  }
+
+  println(patronGold)
+
+  var orderCount = 0;
+  while (orderCount <= 9) {
+      placeOrder(uniquePatrons.shuffled().first(),
+        menuList.shuffled().first()
+      );
+    orderCount++;
+  }
+//
+//
+//
+//  if (patronList.contains("Eli")) {
+//    println("술집 주인이 말한다: Eli는 안쪽 방에서 카드하고 있어요")
+//  } else {
+//    println("술집 주인이 말한다: Eli는 여기 없어요");
+//  }
+//
+//  if (patronList.containsAll(listOf("Sophie", "Mordoc"))) {
+//    println("술집 주인이 말한다, 네, 모두 있어요")
+//  } else {
+//    println("술집 주인이 말한다: 아니요, 나간사람도 있어요");
+//  }
+
+
+  displayPatronBalances();
+
+}
+
+fun calculateChange(price: Double, fullPrice: Double): Double  = fullPrice - price;
+
+fun haveEnoughMoney(price: Double): Boolean = price > 0;
+
+
+fun changePatronBalance(patronName: String, balance: Double) {
+  patronGold[patronName] = balance;
+}
+
+// customer buys
+fun performPurchase(price: Double, patronName: String) {
+  val totalPurse = patronGold.getValue(patronName);
+//  val estimateBalance = calculateChange(price, totalPurse);
+
+  patronGold.getValue(patronName)
+    .run { calculateChange() }
+
+  calculateChange(price, totalPurse)
+    .run {  }
+//  val checkMoney = haveEnoughMoney(price);
+
+
+
 }
 
 
-fun performPurchase(price: Double) {
-    displayBalance();
-
-    val totalPurse = playerGold + (playerSilver / 100.0);
-
-    val checkCurrentBalance = totalPurse >= price;
-
-    if (checkCurrentBalance) {
-        println("Amount in wallet : Gold $totalPurse");
-        println("Buy alchohol with $price Gold");
-
-        val remainingBalance = totalPurse - price;
-        println("Player's remainin balance: ${"%.2f".format(remainingBalance)}")
-
-        val remainingGold = remainingBalance.toInt();
-        val remainingSilver = (remainingBalance % 1 * 100).roundToInt();
-
-        playerGold = remainingGold;
-        playerSilver = remainingSilver;
-
-        displayBalance();
-    } else {
-        sayBartenderYouDontHaveEnoughMoney();
-    }
-
-
-
-}
-
-private fun displayBalance() {
-    println("Player's wallet balance: (Gold: ${playerGold}개, Silver: ${playerSilver}개)")
-}
 
 private fun sayBartenderYouDontHaveEnoughMoney() {
-    println("Bartender You Don't have enough moeny. Check your balance");
+  println("Bartender You Don't have enough moeny. Check your balance");
 }
 
-private fun placeOrder() {
-    val indexofApostrophe = TAVERN_NAME.indexOf('\'');
-    val tavernMaster = TAVERN_NAME.substring(0 until indexofApostrophe);
-    println("마드리갈은 ${tavernMaster}에게 주문한다.");
+private fun placeOrder(patronName: String) {
+  val indexofApostrophe = TAVERN_NAME.indexOf('\'');
+  val tavernMaster = TAVERN_NAME.substring(0 until indexofApostrophe);
+  println("${patronName}은 ${tavernMaster}에게 주문한다.");
 }
 
-private fun placeOrder(menuData: String) {
-    placeOrder();
+private fun placeOrder(patronName: String, menuData: String) {
+  placeOrder(patronName);
 
-    val (type, name, price) = menuData.split(',');
+  val (type, name, price) = menuData.split(',');
+  val message = "${patronName}은 금화 $${price}로 ${name}(${type})을 구입한다."
 
+  println(message);
+  performPurchase(price.toDouble(), patronName)
 
-    val message = "마드리갈은 금화 $${price}로 ${name}(${type})을 구입한다."
+  val phrase = if (name == "Dragon's Breath") {
+    "${patronName}이 감탄한다: ${toDragonSpeak("와, ${name}진짜 좋구나")}"
+  } else {
+    "${patronName}이 말한다: 감사합니다. $name"
+  }
 
-    println(message);
-
-    performPurchase(price.toDouble())
-
-    val phrase = if (name == "Dragon's Breath") {
-        "마드리갈이 감탄한다: ${toDragonSpeak("와, ${name}진짜 좋구나")}"
-    } else {
-        "마드리갈이 말한다: 감사합니다. $name"
-    }
-
-    println(phrase)
-    println(toDragonSpeak("DRAGON'S BREATHE: IT'S GOT WHAT ADVENTURES CRAVE"))
+  println(phrase)
+  println(toDragonSpeak("DRAGON'S BREATHE: IT'S GOT WHAT ADVENTURES CRAVE"))
 }
 
+private fun toDragonSpeak(phrase: String) = phrase.replace(Regex("[AEIOUaeiou]")) { string ->
+  when (string.value) {
+    "a" -> "4"
+    "e" -> "3"
+    "i" -> "1"
+    "o" -> "0"
+    "u" -> "|_|"
+    "A" -> "4"
+    "E" -> "3"
+    "I" -> "1"
+    "O" -> "0"
+    "U" -> "|_|"
+    else -> string.value
+  }
+}
 
-private fun toDragonSpeak(phrase: String) = phrase.replace(Regex("[AEIOUaeiou]")) {string ->
-    when (string.value) {
-        "a" -> "4"
-        "e" -> "3"
-        "i" -> "1"
-        "o" -> "0"
-        "u" -> "|_|"
-        "A" -> "4"
-        "E" -> "3"
-        "I" -> "1"
-        "O" -> "0"
-        "U" -> "|_|"
-        else -> string.value
-    }
+private fun batenderSays(setenceToSay: String): Unit = println("바텐더가 말합니다: $setenceToSay");
+
+private fun displayPatronBalances() {
+  patronGold.forEach { (patron, balance) ->
+    println("$patron, balance: ${"%.2f".format(balance)}")
+  }
 }
 
