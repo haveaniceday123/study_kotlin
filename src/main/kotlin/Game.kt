@@ -3,6 +3,9 @@ fun main(args: Array<String>) {
     var healthPoints = 29;
     val isBlessed = true;
     val isImmortal = false;
+    val player = Player();
+
+    player.castFireball()
 
     // check aura
     val auraColor = auraColor(isBlessed, healthPoints, isImmortal)
@@ -10,7 +13,7 @@ fun main(args: Array<String>) {
 
 
     printPlayerStatus(healthStatus = healthStatus, isBlessed = isBlessed, name = name, auraColor = auraColor)
-    castFireball();
+
     performCombat();
     performCombat("Haru Urara")
     performCombat("Haru Urara", true)
@@ -43,10 +46,6 @@ private fun formatHealthStatus(healthPoints: Int, isBlessed: Boolean) = when (he
     in 15..75 -> "많이 다친 것 같음."
     else -> "최악의 상태임!"
 }
-
-
-private fun castFireball(numFireballs: Int = 2) = println("한 덩어리의 파이어볼이 나타난다. (x$numFireballs)")
-
 private fun performCombat() = println("적군이 없다.");
 
 private fun performCombat(enemyName: String) = println("{$enemyName}과 전투를 시작함");

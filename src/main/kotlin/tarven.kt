@@ -29,14 +29,15 @@ fun main() {
   }
   
   uniquePatrons.forEach {
-    patronGold[it] = 6.0;
+    patronGold[it] = 1.0;
   }
-
-  println(patronGold)
 
   var orderCount = 0;
   while (orderCount <= 9) {
-      placeOrder(uniquePatrons.shuffled().first(),
+      if (uniquePatrons.size == 0) return;
+
+      placeOrder(
+        uniquePatrons.shuffled().first(),
         menuList.shuffled().first()
       );
     orderCount++;
@@ -65,24 +66,37 @@ fun calculateChange(price: Double, fullPrice: Double): Double  = fullPrice - pri
 
 fun haveEnoughMoney(price: Double): Boolean = price > 0;
 
+// remove from uniquePatron
+fun removeUniquePatron(patronName: String) =  uniquePatrons.remove(patronName);
 
+// remove from patronGold
+fun removePatronGold(patronName: String) = patronGold.remove(patronName)
+
+// remove patron from NyetHack
+fun removePatron(patronName: String) {
+  println("${patronName}은 돈이 없네요. 나가주세요");
+  removeUniquePatron(patronName);
+  removePatronGold(patronName);
+}
+
+// change patrons balance
 fun changePatronBalance(patronName: String, balance: Double) {
   patronGold[patronName] = balance;
 }
 
+
+
 // customer buys
 fun performPurchase(price: Double, patronName: String) {
-  val totalPurse = patronGold.getValue(patronName);
-//  val estimateBalance = calculateChange(price, totalPurse);
+  val totalPurse = patronGold.getValue(patronName); //patron's balance
+  val estimateBalance = calculateChange(price, totalPurse);
 
-  patronGold.getValue(patronName)
-    .run { calculateChange() }
-
-  calculateChange(price, totalPurse)
-    .run {  }
-//  val checkMoney = haveEnoughMoney(price);
-
-
+  if (haveEnoughMoney(estimateBalance))
+    changePatronBalance(patronName, estimateBalance)
+  else {
+    println("예상 잔액 $${estimateBalance}")
+    removePatron(patronName);
+  }
 
 }
 
@@ -95,7 +109,7 @@ private fun sayBartenderYouDontHaveEnoughMoney() {
 private fun placeOrder(patronName: String) {
   val indexofApostrophe = TAVERN_NAME.indexOf('\'');
   val tavernMaster = TAVERN_NAME.substring(0 until indexofApostrophe);
-  println("${patronName}은 ${tavernMaster}에게 주문한다.");
+//  println("${patronName}은 ${tavernMaster}에게 주문한다.");
 }
 
 private fun placeOrder(patronName: String, menuData: String) {
@@ -113,8 +127,8 @@ private fun placeOrder(patronName: String, menuData: String) {
     "${patronName}이 말한다: 감사합니다. $name"
   }
 
-  println(phrase)
-  println(toDragonSpeak("DRAGON'S BREATHE: IT'S GOT WHAT ADVENTURES CRAVE"))
+//  println(phrase)
+//  println(toDragonSpeak("DRAGON'S BREATHE: IT'S GOT WHAT ADVENTURES CRAVE"))
 }
 
 private fun toDragonSpeak(phrase: String) = phrase.replace(Regex("[AEIOUaeiou]")) { string ->
