@@ -1,14 +1,13 @@
-import kotlin.math.roundToInt
 import java.io.File
 
 const val TAVERN_NAME = "Tavernyl's Folly";
 
 
-//val patronList: List<String> = listOf("Eli", "Mordoc", "Sophie");
+//val com.bignerdranch.nyethack.getPatronList: List<String> = listOf("Eli", "Mordoc", "Sophie");
 val patronList: MutableList<String> = mutableListOf("Eli", "Mordoc", "Sophie");
 val uniquePatrons = mutableSetOf<String>();
 val readOnlyPatronList: List<String> = patronList.toList();
-//val patronGold = mapOf("Eli" to 10.5, "Mordoc" to 8.0, "Sophie" to 5.5);
+//val com.bignerdranch.nyethack.getPatronGold = mapOf("Eli" to 10.5, "Mordoc" to 8.0, "Sophie" to 5.5);
 val patronGold = mutableMapOf<String, Double>()
 val lastName = listOf("Ironfoot", "Fernworth",  "Baggins");
 
@@ -36,22 +35,22 @@ fun main() {
   while (orderCount <= 9) {
       if (uniquePatrons.size == 0) return;
 
-      placeOrder(
-        uniquePatrons.shuffled().first(),
-        menuList.shuffled().first()
-      );
+    placeOrder(
+      uniquePatrons.shuffled().first(),
+      menuList.shuffled().first()
+    );
     orderCount++;
   }
 //
 //
 //
-//  if (patronList.contains("Eli")) {
+//  if (com.bignerdranch.nyethack.getPatronList.contains("Eli")) {
 //    println("술집 주인이 말한다: Eli는 안쪽 방에서 카드하고 있어요")
 //  } else {
 //    println("술집 주인이 말한다: Eli는 여기 없어요");
 //  }
 //
-//  if (patronList.containsAll(listOf("Sophie", "Mordoc"))) {
+//  if (com.bignerdranch.nyethack.getPatronList.containsAll(listOf("Sophie", "Mordoc"))) {
 //    println("술집 주인이 말한다, 네, 모두 있어요")
 //  } else {
 //    println("술집 주인이 말한다: 아니요, 나간사람도 있어요");
@@ -69,7 +68,7 @@ fun haveEnoughMoney(price: Double): Boolean = price > 0;
 // remove from uniquePatron
 fun removeUniquePatron(patronName: String) =  uniquePatrons.remove(patronName);
 
-// remove from patronGold
+// remove from com.bignerdranch.nyethack.getPatronGold
 fun removePatronGold(patronName: String) = patronGold.remove(patronName)
 
 // remove patron from NyetHack
