@@ -5,6 +5,10 @@ plugins {
     application
 }
 
+sourceSets.main {
+  java.srcDir("src")
+}
+
 group = "me.bsshin"
 version = "1.0-SNAPSHOT"
 

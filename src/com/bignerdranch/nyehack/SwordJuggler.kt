@@ -1,3 +1,5 @@
+package com.bignerdranch.nyehack
+
 fun main() {
     var swordJuggling: Int? = null;
     var isJugglingProficient = (1..3).shuffled().last() == 3
@@ -18,7 +20,7 @@ fun main() {
 }
 
 fun proficiencyCheck(swordsJuggling: Int?) {
-//    swordsJuggling ?: throw UnskilledSwordJugglerException()
+//    swordsJuggling ?: throw com.bignerdranch.nyehack.UnskilledSwordJugglerException()
     checkNotNull(swordsJuggling) { "플레이어가 저글링 할 수 없음" };
 }
 

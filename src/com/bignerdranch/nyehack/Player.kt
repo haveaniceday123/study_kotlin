@@ -1,3 +1,5 @@
+package com.bignerdranch.nyehack
+
 class Player {
 
   // player name

@@ -1,3 +1,5 @@
+package com.bignerdranch.nyehack
+
 import java.io.File
 
 const val TAVERN_NAME = "Tavernyl's Folly";
@@ -127,7 +129,7 @@ private fun placeOrder(patronName: String, menuData: String) {
   }
 
 //  println(phrase)
-//  println(toDragonSpeak("DRAGON'S BREATHE: IT'S GOT WHAT ADVENTURES CRAVE"))
+//  println(com.bignerdranch.nyehack.toDragonSpeak("DRAGON'S BREATHE: IT'S GOT WHAT ADVENTURES CRAVE"))
 }
 
 private fun toDragonSpeak(phrase: String) = phrase.replace(Regex("[AEIOUaeiou]")) { string ->
