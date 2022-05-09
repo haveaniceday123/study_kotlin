@@ -1,23 +1,15 @@
 package com.bignerdranch.nyethack
 
-class Player3(_name: String, val health: Int) {
-  val race = "DWARF"
-  var town = "Bavaria"
-  val name = _name;
-  val alignment: String
-  private var age = 0
+class Player3(_name: String) {
+  val name: String = _name;
+  val playerName: String = initPlayerName();
 
-  init {
-    println("initializing player")
-    alignment = "GOOD"
-  }
 
-  constructor(_name: String): this(_name, 100) {
-    town = "The Shire";
-  }
+  private fun initPlayerName() = name;
 
 }
 
 fun main() {
-  Player3("Madrigal")
+  println(Player3("Madrigal").playerName)
+
 }
